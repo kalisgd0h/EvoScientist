@@ -63,6 +63,12 @@ Verify the token was saved:
 ls ~/.claude/.credentials.json   # note the leading dot
 ```
 
+> **Using an OpenAI / ChatGPT plan instead?** ccproxy also fronts a ChatGPT
+> subscription via its Codex endpoint. Sign in with `ccproxy auth login codex`
+> and set `EVOSCIENTIST_OPENAI_AUTH_MODE=oauth` (in place of the Anthropic
+> `EVOSCIENTIST_ANTHROPIC_AUTH_MODE`) in the service environment below. A single
+> ccproxy process serves whichever providers you enable.
+
 ---
 
 ## 4. Install EvoScientist from source

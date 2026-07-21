@@ -2089,6 +2089,12 @@ def _main_callback(
         "--auth-mode",
         help="Auth mode for Anthropic/OpenAI: api_key (default) or oauth (ccproxy).",
     ),
+    openai_auth_mode: str | None = typer.Option(
+        None,
+        "--openai-auth-mode",
+        help="OpenAI-only auth mode: api_key or oauth (ChatGPT plan via ccproxy Codex). "
+        "Overrides --auth-mode for OpenAI; leaves Anthropic untouched.",
+    ),
     ui: str | None = typer.Option(
         None,
         "--ui",
@@ -2173,6 +2179,10 @@ def _main_callback(
             raise typer.BadParameter("--auth-mode must be 'api_key' or 'oauth'")
         cli_overrides["anthropic_auth_mode"] = auth_mode
         cli_overrides["openai_auth_mode"] = auth_mode
+    if openai_auth_mode:
+        if openai_auth_mode not in ("api_key", "oauth"):
+            raise typer.BadParameter("--openai-auth-mode must be 'api_key' or 'oauth'")
+        cli_overrides["openai_auth_mode"] = openai_auth_mode
 
     config = get_effective_config(cli_overrides)
     apply_config_to_env(config)

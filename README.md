@@ -403,6 +403,42 @@ cp .env.example .env  # then fill in your keys
 
 </details>
 
+<details>
+<summary> 🔐 OAuth sign-in — use a subscription instead of API keys </summary>
+
+If you already pay for a **ChatGPT plan** or a **Claude Pro/Max plan**, you can route
+requests through your subscription (no per-token API billing) via
+[`ccproxy`](https://github.com/jhfnetboy/ccproxy-api), a small local proxy. Install the
+optional extra once:
+
+```bash
+uv sync --extra oauth          # or: pip install 'EvoScientist[oauth]'
+```
+
+**Use an OpenAI / ChatGPT plan only** (leaves Anthropic on API-key mode):
+
+```bash
+ccproxy auth login codex                 # one-time browser sign-in with your ChatGPT account
+EvoSci --openai-auth-mode oauth          # then pick an OpenAI model as usual
+```
+
+Equivalently, set it in the environment (also honored by `EvoSci serve`):
+
+```bash
+export EVOSCIENTIST_OPENAI_AUTH_MODE=oauth
+```
+
+**Use a Claude Pro/Max plan** — `ccproxy auth login claude-api`, then `EVOSCIENTIST_ANTHROPIC_AUTH_MODE=oauth`
+(or `EvoSci --auth-mode oauth` to enable OAuth for **both** providers at once).
+
+> [!NOTE]
+> `--openai-auth-mode` / `EVOSCIENTIST_OPENAI_AUTH_MODE` turn on OpenAI OAuth **independently**,
+> so you don't need a Claude subscription. ccproxy serves both providers from one local process
+> (default port `8000`, override with `EVOSCIENTIST_CCPROXY_PORT`). Through the Codex endpoint you
+> are limited to the models your plan exposes, and `gpt-*` requests are mapped to the plan's Codex model.
+
+</details>
+
 <p align="right"><a href="#top">🔝Back to top</a></p>
 
 ## ⚡ Quick Start
